@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
 
 // Create express app
 const app = express()
@@ -11,10 +12,16 @@ db.once('open', () => {
     console.log("Connected to MongoDB database")
 })
 
+//Middleware
+app.use(bodyParser.json())
+
 //Routes
 app.get('/', (req, res) => {
     res.send("Hello world!")
 })
+
+const employees = require('./routes/employeesRoutes.js')
+app.use('/api/v1/employees', employees)
 
 
 // Starting server
