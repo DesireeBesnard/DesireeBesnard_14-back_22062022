@@ -1,27 +1,19 @@
 const express = require('express')
-const mongoose = require('mongoose')
+require('./database/index.js')
 const bodyParser = require('body-parser')
+const employees = require('./routes/employees.routes.js').default
+const common = require('./routes/common.routes.js')
+
 
 // Create express app
 const app = express()
 
-//Database
-mongoose.connect('mongodb://localhost/hrnetDB')
-const db = mongoose.connection
-db.once('open', () => {
-    console.log("Connected to MongoDB database")
-})
-
 //Middleware
 app.use(bodyParser.json())
 
-//Routes
-app.get('/', (req, res) => {
-    res.send("Hello world!")
-})
-
-const employees = require('./routes/employeesRoutes.js')
-app.use('/api/v1/employees', employees)
+//faire un groupe pour éviter de tout taper
+app.use('/api/v1', employees)
+app.use('/', common)
 
 
 // Starting server
