@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const EmployeeSchema = new mongoose.Schema({
     firstName: String,
@@ -11,4 +11,8 @@ const EmployeeSchema = new mongoose.Schema({
     zipCode: String
 })
 
-module.exports = mongoose.model('Employee', EmployeeSchema)
+//module.exports = mongoose.model('Employee', EmployeeSchema)
+
+const employee = mongoose.model('Employee', EmployeeSchema)
+
+export default employee

@@ -1,4 +1,4 @@
-import { EmployeesDAO } from "../dao/employees.dao"
+import { EmployeesDAO } from "../dao/employees.dao.js"
 
 
 export class EmployeesService {
@@ -13,9 +13,14 @@ export class EmployeesService {
         return EmployeesService.instance
     }
 
-    create(employee) {
-        console.log("Employee service", employee)
-        EmployeesDAO.getInstance().create(employee)
+    async list() {
+        const employees = await EmployeesDAO.getInstance().list()
+        return employees
+    }
+
+    async create(employee) {
+        const newEmployee = await EmployeesDAO.getInstance().create(employee)
+        return newEmployee
     }
 
 }

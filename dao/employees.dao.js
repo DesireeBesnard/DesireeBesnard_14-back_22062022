@@ -1,3 +1,6 @@
+import Employee from '../models/Employee.js'
+
+//DAO defines the standard operations to be performed on a model object.
 
 
 export class EmployeesDAO {
@@ -12,8 +15,15 @@ export class EmployeesDAO {
         return EmployeesDAO.instance
     }
 
-    create(employee) {
-        console.log("adding employee to database")
+    async list() {
+        const employees = await Employee.find()
+        return employees 
+    }
+
+    async create(employee) {
+        const newEmployee = new Employee(employee)
+        const savedEmployee = await newEmployee.save()
+        return savedEmployee
     }
 
 }

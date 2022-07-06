@@ -1,6 +1,8 @@
-import { EmployeesService } from "../services/employees.services"
+import { EmployeesService } from "../services/employees.services.js"
 
 export class EmployeesController {
+
+    //contains routes implementation code
 
     static instance 
 
@@ -12,13 +14,16 @@ export class EmployeesController {
         return EmployeesController.instance
     }
 
-    createEmployee(req, res, next) {
+    async list(req, res) {
+        const employees = await EmployeesService.getInstance().list()
+        res.status(200).send(employees)
+    }
+
+    async createEmployee(req, res) {
         console.log('creating employee')
 
-        EmployeesService.getInstance().create(req.body)
+        const employee = await EmployeesService.getInstance().create(req.body)
 
-        res.status(200).send({
-            message: "Success"
-        })
+        res.status(200).send(employee)
     }
 }
