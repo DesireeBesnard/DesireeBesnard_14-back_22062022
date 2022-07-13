@@ -1,6 +1,7 @@
 import express from 'express';
 import ('./database/index.js')
 import bodyParser from 'body-parser'
+import cookieParser from "cookie-parser"
 import authentication from './routes/authentication.routes.js'
 import employees from './routes/employees.routes.js'
 import common from './routes/employees.routes.js'
@@ -12,6 +13,7 @@ const app = express()
 
 //Middleware
 app.use(bodyParser.json())
+app.use(cookieParser())
 //faire un groupe pour éviter de tout taper
 app.use('/', common)
 app.use('/api/v1', authentication)

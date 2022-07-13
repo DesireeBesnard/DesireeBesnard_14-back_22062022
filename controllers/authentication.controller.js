@@ -17,6 +17,5 @@ export class AuthenticationController {
         const newUser = await AuthenticationService.getInstance().register(req.body)
         res.status(200).send(newUser)
     }
-
     
 }
