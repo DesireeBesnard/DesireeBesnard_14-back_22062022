@@ -26,4 +26,26 @@ export class EmployeesDAO {
         return savedEmployee
     }
 
+    async update(employee, id) {
+        try {
+            const updatedEmployee = await Employee.findByIdAndUpdate(
+                id,
+                employee
+            )
+            return updatedEmployee
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async delete(id) {
+        try {
+            const deletedEmployee = await Employee.findByIdAndDelete(id)
+            return deletedEmployee
+        } catch (error) {
+            throw "Je n'ai pas delete"
+        }
+    }
+    
+
 }

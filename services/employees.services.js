@@ -1,5 +1,7 @@
 import { EmployeesDAO } from "../dao/employees.dao.js"
 
+// service morceau de code qui permet de faire une logique. Une tâche par service
+
 
 export class EmployeesService {
 
@@ -21,6 +23,16 @@ export class EmployeesService {
     async create(employee) {
         const newEmployee = await EmployeesDAO.getInstance().create(employee)
         return newEmployee
+    }
+
+    async update(employee, id) {
+        const updatedEmployee = await EmployeesDAO.getInstance().update(employee, id)
+        return updatedEmployee
+    }
+
+    async delete(id) {
+        const deleteEmployee = await EmployeesDAO.getInstance().delete(id)
+        return deleteEmployee
     }
 
 }

@@ -1,6 +1,7 @@
 import express from 'express';
 import ('./database/index.js')
 import bodyParser from 'body-parser'
+import authentication from './routes/authentication.routes.js'
 import employees from './routes/employees.routes.js'
 import common from './routes/employees.routes.js'
 const port = 3001
@@ -13,6 +14,7 @@ const app = express()
 app.use(bodyParser.json())
 //faire un groupe pour éviter de tout taper
 app.use('/', common)
+app.use('/api/v1', authentication)
 app.use('/api/v1', employees)
 
 

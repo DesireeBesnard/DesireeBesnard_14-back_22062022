@@ -1,4 +1,8 @@
 import { EmployeesService } from "../services/employees.services.js"
+import mongoose from 'mongoose'
+
+
+//controller appelle les différents services
 
 export class EmployeesController {
 
@@ -25,5 +29,22 @@ export class EmployeesController {
         const employee = await EmployeesService.getInstance().create(req.body)
 
         res.status(200).send(employee)
+    }
+
+    async update(req, res) {
+
+        const updateEmployee = await EmployeesService.getInstance().update(req.body, req.params.id)
+        res.status(200).send(updateEmployee)
+    }
+
+    async delete(req, res) {
+
+        try {
+            const deleteEmployee = await EmployeesService.getInstance().delete(req.params.id)
+            res.status(200).send(deleteEmployee)
+        } catch (error) {
+            res.status(500).send(error)
+        }
+
     }
 }

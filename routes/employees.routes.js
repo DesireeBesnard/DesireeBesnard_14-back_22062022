@@ -21,7 +21,13 @@ router.post('/employees', [
 ])
 
 //ajouter put et delete
+router.put('/employees/:id', [
+    employeesController.update
+])
 
+router.delete('/employees/:id', [
+    employeesController.delete
+])
 
 export default router
 
