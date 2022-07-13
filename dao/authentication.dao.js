@@ -12,7 +12,7 @@ export class AuthenticationDAO {
     }
 
     async register(user) {
-        const newUser = new HR()
+        const newUser = new HR(user)
         const savedUser = await newUser.save()
         return savedUser
     }
