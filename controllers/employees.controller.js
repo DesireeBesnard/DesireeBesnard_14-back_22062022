@@ -28,7 +28,7 @@ export class EmployeesController {
 
         const employee = await EmployeesService.getInstance().create(req.body)
 
-        res.status(200).send(employee)
+        res.status(201).send(employee)
     }
 
     async update(req, res) {

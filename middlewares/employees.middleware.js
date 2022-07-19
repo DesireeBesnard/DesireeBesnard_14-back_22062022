@@ -1,4 +1,5 @@
 import { check } from 'express-validator'
+import bcrypt from 'bcryptjs'
 
 export class EmployeesMiddleware {
 
@@ -12,9 +13,7 @@ export class EmployeesMiddleware {
         return EmployeesMiddleware.instance
     }
 
-    validateNewEmployee(req, res, next) {
-
-        console.log(req.body)
+    async validateNewEmployee(req, res, next) {
 
         check('firstname')
             .trim()
@@ -51,6 +50,10 @@ export class EmployeesMiddleware {
         check('zipCode').trim()
             .notEmpty()
             .withMessage('Please fill the zipCode field')
+
+
+       const salt = await bcrypt.genSalt(10)
+       req.body.password = await bcrypt.hash(req.body.password, salt)
 
         next()
 
