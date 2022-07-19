@@ -18,7 +18,7 @@ router.get('/employees', [
 
 //Create a user
 router.post('/employees', [
-    //authenticationMiddleware.checkToken,
+    authenticationMiddleware.checkToken,
     employeesMiddleware.validateNewEmployee,
     employeesController.createEmployee
 ])
