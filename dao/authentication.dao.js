@@ -1,4 +1,4 @@
-import HR from '../models/HR.js'
+import employee from "../models/Employee.js"
 
 export class AuthenticationDAO {
 
@@ -12,7 +12,7 @@ export class AuthenticationDAO {
     }
 
     async register(user) {
-        const newUser = new HR(user)
+        const newUser = new employee(user)
         const savedUser = await newUser.save()
         return savedUser
     }

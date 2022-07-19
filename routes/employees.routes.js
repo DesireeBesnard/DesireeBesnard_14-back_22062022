@@ -23,15 +23,21 @@ router.post('/employees', [
     employeesController.createEmployee
 ])
 
-//ajouter put et delete
 router.put('/employees/:id', [
     authenticationMiddleware.checkToken,
+    employeesMiddleware.checkOwner,
     employeesController.update
+])
+
+router.put('employees/:id/admin', [
+    authenticationMiddleware.checkToken,
+    employeesMiddleware.checkAdmin,
+    employeesController.updateAdminStatus
 ])
 
 router.delete('/employees/:id', [
     authenticationMiddleware.checkToken,
-    employeesController.delete
+    //employeesController.delete
 ])
 
 export default router

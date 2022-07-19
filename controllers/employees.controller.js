@@ -37,6 +37,10 @@ export class EmployeesController {
         res.status(200).send(updateEmployee)
     }
 
+    async updateAdminStatus(req, res) {
+        res.send("Status updated")
+    }
+
     async delete(req, res) {
 
         try {

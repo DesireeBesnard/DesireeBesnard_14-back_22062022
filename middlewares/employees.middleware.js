@@ -55,4 +55,18 @@ export class EmployeesMiddleware {
         next()
 
     }
+
+    checkOwner(req, res, next) {
+        console.log('I am the owner')
+        next()
+    }
+
+    async checkAdmin(req, res, next) {
+        const token = req.cookies.authcookie
+        if(user.isAdmin) {
+            next()
+        } else {
+            res.status(403).send
+        }
+    }
 }

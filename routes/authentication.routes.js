@@ -15,6 +15,6 @@ router.post('/user/login', [
     authenticationMiddleware.login
 ])
 
-router.post('/user/logout')
+//router.post('/user/logout')
 
 export default router

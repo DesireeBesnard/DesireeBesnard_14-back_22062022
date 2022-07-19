@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser"
-import HR from "../models/HR.js"
+import employee from "../models/Employee.js"
 
 
 export class AuthenticationMiddleware {
@@ -31,22 +31,6 @@ export class AuthenticationMiddleware {
         }
     }
 
-    async login(req, res, next) {
- 
-        try {
-            const user = await HR.findOne( req.body )
-            const token = jwt.sign({user:user.email},'secret_key')
-            res.cookie('authcookie',token,{maxTime:900000,httpOnly:true}) 
-            //res.send(user)
-            console("Successful authentication")
-   
-        } catch (error) {
-            res.status(500).send(error)
-        }
-        next()
-
-    }
-
     checkToken (req, res, next) {
         const authcookie = req.cookies.authcookie
         
@@ -60,4 +44,20 @@ export class AuthenticationMiddleware {
             }
         })
     }
+
+    async login(req, res, next) {
+ 
+        try {
+            const user = await employee.findOne( req.body )
+            const token = jwt.sign({user:user.email},'secret_key')
+            res.cookie('authcookie',token,{maxTime:90000,httpOnly:true}) 
+            console("Successful authentication")
+   
+        } catch (error) {
+            res.status(500).send(error)
+        }
+        next()
+
+    }
+
 }
