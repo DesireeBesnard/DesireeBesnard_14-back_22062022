@@ -1,4 +1,8 @@
 import jwt from "jsonwebtoken"
+import RefreshToken from "../models/RefreshToken.js"
+
+
+const refreshTokenArray = []
 
 export class TokenMiddleware {
     
@@ -47,18 +51,40 @@ export class TokenMiddleware {
         return jwt.sign({userId: id}, process.env.REFRESH_TOKEN_SECRET)
     }
     
-    getNewToken(req, res, next) {
+    async getNewToken(req, res, next) {
         const refreshToken = req.body.refreshToken
+
+        if(!refreshToken) {
+            res.status(401).send("token required")
+        }
+
         const decode = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
-        console.log('coucou1')
         if(!decode) {
             res.status(403).send("Invalid token")
         }
     
-        const userId = decode.userId
-        const newToken = this.getAccessToken(userId)
-        const newRefreshToken = this.getRefreshAccessToken(userId)
-        res.status(200).send({token: newToken, refreshToken: newRefreshToken})
+        try {
+            const userId = decode.userId
+
+            const findToken = await RefreshToken.findOne({token:refreshToken})
+            if(!findToken) {
+                res.status(403).send("Token expired")
+            } else {
+
+                const token = this.getAccessToken(userId)
+                const refresh_Token = this.getRefreshAccessToken(userId)
+                let newToken = await RefreshToken.findOneAndUpdate(
+                    {token: refreshToken},
+                    {token: refresh_Token},
+                    {new: true}
+                )
+
+            }
+
+            res.status(200).send({token: newToken, refreshToken: newRefreshToken})
+        } catch (error) {
+            res.status(404).send(error)
+        }
     }
     
 }

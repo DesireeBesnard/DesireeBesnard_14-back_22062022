@@ -1,4 +1,5 @@
 import employee from "../models/Employee.js"
+import refreshToken from "../models/RefreshToken.js"
 import bcrypt from 'bcryptjs'
 import { TokenMiddleware } from '../middlewares/token.middleware.js'
 const tokenMiddleware = TokenMiddleware.getInstance()
@@ -51,6 +52,21 @@ export class AuthenticationMiddleware {
 
             const token = tokenMiddleware.getAccessToken(user._id)
             const refresh_token = tokenMiddleware.getRefreshAccessToken(user._id)
+            const findToken = await refreshToken.findOne({user:user._id})
+
+            if(!findToken) {
+                const refreshTokenModel = new refreshToken({
+                    token: refresh_token,
+                    user: user._id
+                })
+                await refreshTokenModel.save()
+            } else {
+                let newToken = await refreshTokenModel.findOneAndUpdate(
+                    {user: user._id},
+                    {token: refresh_token},
+                    {new: true})
+            }
+
 
             res.cookie('authcookie', token, { maxTime: 900000, httpOnly: true })
 
