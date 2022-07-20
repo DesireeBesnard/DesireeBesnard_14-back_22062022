@@ -1,7 +1,5 @@
-import jwt from "jsonwebtoken"
-import dotenv from "dotenv"
-import cookieParser from "cookie-parser"
 import employee from "../models/Employee.js"
+import jwt from "jsonwebtoken"
 import bcrypt from 'bcryptjs'
 
 
@@ -54,22 +52,23 @@ export class AuthenticationMiddleware {
                 res.status(400).send("Incomplete form")
             }
             //check if user exists
-            const user = await employee.findOne( {email: req.body.email} )
+            const user = await employee.findOne({email:req.body.email})
             if(!user) {
                 res.status(404).send("Unkown user")
             }
 
             //check password
             const validPwd = await bcrypt.compare(req.body.password, user.password)
-            if(!validPwd) {
-                res.status(401).send("Wrong password")
-            }
+            !validPwd && res.status(400).send("Wrong password")
 
-           /* const token = jwt.sign({user:user.email},'secret_key')
-            res.cookie('authcookie',token,{maxTime:90000,httpOnly:true}) */
-            res.send(user)
-            console("Successful authentication")
-   
+            //jwt.sign(payload, secretOrPrivateKey, [options, callback]))
+            const token = jwt.sign({userId:user._id}, process.env.ACCESS_TOKEN_SECRET,{expiresIn:'15m'})
+
+            res.cookie('authcookie',token,{maxTime:900000,httpOnly:true})
+            console.log("Successful authentication")
+            res.status(200).send(user)
+            
+
         } catch (error) {
             res.status(500)
         }

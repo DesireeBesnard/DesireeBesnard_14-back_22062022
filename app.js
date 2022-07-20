@@ -2,11 +2,12 @@ import express from 'express';
 import ('./database/index.js')
 import bodyParser from 'body-parser'
 import cookieParser from "cookie-parser"
+import dotenv from "dotenv"
 import authentication from './routes/authentication.routes.js'
 import employees from './routes/employees.routes.js'
 import common from './routes/employees.routes.js'
 const port = 3001
-
+dotenv.config()
 
 // Create express app
 const app = express()
