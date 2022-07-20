@@ -14,12 +14,10 @@ const EmployeeSchema = new mongoose.Schema({
     dateOfBirth: String,
     email: {
         type: String,
-        unique: true,
         required: true
     },
     password: {
         type: String,
-        unique: true,
         min: 8,
         required: true
     },
