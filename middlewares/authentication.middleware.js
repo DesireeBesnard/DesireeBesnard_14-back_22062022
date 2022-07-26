@@ -50,8 +50,9 @@ export class AuthenticationMiddleware {
             const validPwd = await bcrypt.compare(req.body.password, user.password)
             !validPwd && res.status(400).send("Wrong password")
 
-            const token = tokenMiddleware.getAccessToken(user._id)
-            const refresh_token = tokenMiddleware.getRefreshAccessToken(user._id)
+
+            const token = tokenMiddleware.getAccessToken(user)
+            /*const refresh_token = tokenMiddleware.getRefreshAccessToken(user._id)
             const findToken = await refreshToken.findOne({user:user._id})
 
             if(!findToken) {
@@ -61,16 +62,16 @@ export class AuthenticationMiddleware {
                 })
                 await refreshTokenModel.save()
             } else {
-                let newToken = await refreshTokenModel.findOneAndUpdate(
+                let newToken = await refreshToken.findOneAndUpdate(
                     {user: user._id},
                     {token: refresh_token},
                     {new: true})
-            }
+            }*/
 
+            //res.cookie('authcookie', token, { maxTime: 900000, httpOnly: true })
 
-            res.cookie('authcookie', token, { maxTime: 900000, httpOnly: true })
-
-            res.status(200).send({ user: user, token: token, refreshToken: refresh_token })
+            //res.status(200).send({ user: user, token: token, refreshToken: refresh_token })
+            res.status(200).json({token})
 
 
         } catch (error) {

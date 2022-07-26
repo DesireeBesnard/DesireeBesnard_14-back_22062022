@@ -14,6 +14,7 @@ const tokenMiddleware = TokenMiddleware.getInstance()
 
 //Get all routes
 router.get('/employees', [
+    tokenMiddleware.checkToken,
     employeesController.list
 ])
 
@@ -21,6 +22,7 @@ router.get('/employees', [
 //Create a user
 router.post('/employees', [
     tokenMiddleware.checkToken,
+    employeesMiddleware.checkAdmin,
     employeesMiddleware.validateNewEmployee,
     employeesController.createEmployee
 ])

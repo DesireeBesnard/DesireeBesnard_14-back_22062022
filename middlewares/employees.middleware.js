@@ -1,5 +1,9 @@
 import { check } from 'express-validator'
 import bcrypt from 'bcryptjs'
+import { EmployeesController } from "../controllers/employees.controller.js"
+const employeesController = EmployeesController.getInstance()
+import Employee from '../models/Employee.js'
+
 
 export class EmployeesMiddleware {
 
@@ -65,11 +69,12 @@ export class EmployeesMiddleware {
     }
 
     async checkAdmin(req, res, next) {
-        const token = req.cookies.authcookie
+        const user = req.user
+
         if(user.isAdmin) {
             next()
         } else {
-            res.status(403).send
+            res.status(403).send("Admin status required")
         }
     }
 }

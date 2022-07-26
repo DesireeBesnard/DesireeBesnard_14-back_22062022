@@ -16,11 +16,11 @@ export class TokenMiddleware {
     }
 
     checkToken(req, res, next) {
-        const authcookie = req.cookies.authcookie
-        const token = req.headers["x-access-token"]
+        //const authcookie = req.cookies.authcookie
+        const authHeader = req.headers.authorization
     
-        if (!token) {
-            res.status(403).send("Token required")
+        if (!authHeader) {
+            res.status(401).send("Token required")
         }
     
         try {
@@ -34,17 +34,22 @@ export class TokenMiddleware {
                     }
                 })
             } else */
-            const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
-            req.userId = decode
-    
-            next()
+            const token = authHeader.split(' ')[1]
+            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user)  => {
+                if(err) {
+                    res.status(403).send("Invalid token")
+                }
+
+                req.user = user
+                next()
+            })
         } catch {
             res.status(401).send("Invalid token")
         }
     }
 
-    getAccessToken(id) {
-        return jwt.sign({ userId: id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' })
+    getAccessToken(user) {
+        return jwt.sign({ userId: user._id, isAdmin: user.isAdmin}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' })
     }
     
     getRefreshAccessToken(id) {
@@ -62,6 +67,8 @@ export class TokenMiddleware {
         if(!decode) {
             res.status(403).send("Invalid token")
         }
+
+        //new access token
     
         try {
             const userId = decode.userId
@@ -78,12 +85,12 @@ export class TokenMiddleware {
                     {token: refresh_Token},
                     {new: true}
                 )
-
             }
 
             res.status(200).send({token: newToken, refreshToken: newRefreshToken})
         } catch (error) {
-            res.status(404).send(error)
+            console.error(error)
+            res.status(500).send(error)
         }
     }
     
