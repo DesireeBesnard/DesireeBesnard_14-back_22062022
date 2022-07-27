@@ -52,8 +52,14 @@ export class AuthenticationMiddleware {
 
 
             const token = tokenMiddleware.getAccessToken(user)
-            /*const refresh_token = tokenMiddleware.getRefreshAccessToken(user._id)
-            const findToken = await refreshToken.findOne({user:user._id})
+            const refresh_token = tokenMiddleware.getRefreshAccessToken(user)
+            req.userId = user._id
+            req.token = token
+            req.refreshToken = refresh_token
+            next()
+
+
+            /*const findToken = await refreshToken.findOne({user:user._id})
 
             if(!findToken) {
                 const refreshTokenModel = new refreshToken({
@@ -71,13 +77,10 @@ export class AuthenticationMiddleware {
             //res.cookie('authcookie', token, { maxTime: 900000, httpOnly: true })
 
             //res.status(200).send({ user: user, token: token, refreshToken: refresh_token })
-            res.status(200).json({token})
-
 
         } catch (error) {
             res.status(500)
         }
-        next()
 
     }
 

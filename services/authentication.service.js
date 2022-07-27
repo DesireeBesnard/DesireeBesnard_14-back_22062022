@@ -16,7 +16,8 @@ export class AuthenticationService {
         return newUser
     }
 
-    async login() {
-        const user = await AuthenticationDAO.getInstance().login()
+    async login(userId, refreshToken) {
+        return await AuthenticationDAO.getInstance().login(userId, refreshToken)
+ 
     }
 }

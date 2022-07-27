@@ -14,7 +14,8 @@ router.post('/user/register', [
 ])
 
 router.post('/user/login', [
-    authenticationMiddleware.login
+    authenticationMiddleware.login,
+    authenticationController.login
 ])
 
 router.post('/user/refreshToken', [

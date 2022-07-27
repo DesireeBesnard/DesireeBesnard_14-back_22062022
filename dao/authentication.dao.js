@@ -16,4 +16,11 @@ export class AuthenticationDAO {
         const savedUser = await newUser.save()
         return savedUser
     }
+
+    async login(userId, refreshToken) {
+        return await employee.updateOne(
+            {_id: userId},
+            {$addToSet: { refreshTokens: refreshToken } }
+        )
+    }
 }

@@ -52,8 +52,8 @@ export class TokenMiddleware {
         return jwt.sign({ userId: user._id, isAdmin: user.isAdmin}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' })
     }
     
-    getRefreshAccessToken(id) {
-        return jwt.sign({userId: id}, process.env.REFRESH_TOKEN_SECRET)
+    getRefreshAccessToken(user) {
+        return jwt.sign({userId: user._id, isAdmin: user.isAdmin}, process.env.REFRESH_TOKEN_SECRET)
     }
     
     async getNewToken(req, res, next) {

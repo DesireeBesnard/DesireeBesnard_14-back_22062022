@@ -1,5 +1,4 @@
 import { AuthenticationService } from '../services/authentication.service.js'
-import mongoose from 'mongoose'
 
 
 export class AuthenticationController {
@@ -16,6 +15,11 @@ export class AuthenticationController {
     async register(req, res) {
         const newUser = await AuthenticationService.getInstance().register(req.body)
         res.status(200).send(newUser)
+    }
+
+    async login(req, res) {
+        const refreshToken = await AuthenticationService.getInstance().login(req.userId, req.refreshToken)
+        res.status(200).send({token: req.token, refreshToken: req.refreshToken})
     }
     
 }
