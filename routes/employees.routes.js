@@ -33,6 +33,12 @@ router.put('/employees/:id', [
     employeesController.update
 ])
 
+/*router.put('employees/:id/status', [
+    tokenMiddleware.checkToken,
+    employeesMiddleware.checkOwner,
+    employeesController.update
+])*/
+
 router.put('employees/:id/admin', [
     tokenMiddleware.checkToken,
     employeesMiddleware.checkAdmin,

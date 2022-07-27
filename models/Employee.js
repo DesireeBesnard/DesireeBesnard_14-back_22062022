@@ -33,11 +33,11 @@ const EmployeeSchema = new mongoose.Schema({
     },
     token: {
         type: Array,
-        default: [String]
+        default: []
     },
     refreshTokens: {
         type: Array,
-        default: [String]
+        default: []
     },
     followers: {
         type: Array,

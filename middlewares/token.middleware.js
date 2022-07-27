@@ -18,31 +18,34 @@ export class TokenMiddleware {
     checkToken(req, res, next) {
         const authcookie = req.cookies.authcookie
         const authHeader = req.headers.authorization
-    
-        if (!authHeader) {
-            res.status(401).send("Token required")
-        }
+
     
         try {
-            /* if(authcookie) {
-                jwt.verify(authcookie,"secret_key",(err,data) => {
+            if ((!authcookie)&&(!authHeader)) {
+                return res.status(401).send("Token required")
+            }
+            
+            if((authcookie)&&(!authHeader)) {
+                jwt.verify(authcookie,process.env.ACCESS_TOKEN_SECRET,(err,user) => {
                     if(err){
-                        res.sendStatus(401)
-                    } else if(data.userId){
-                        req.userId = data.userId
-                        next()
+                        res.sendStatus(401).send("Invalid signature")
+                    } else {
+                        req.user = user
                     }
                 })
-            } else */
-            const token = authHeader.split(' ')[1]
-            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user)  => {
-                if(err) {
-                    res.status(403).send("Invalid token")
-                }
+            }
 
-                req.user = user
-                next()
-            })
+            if((!authcookie)&&(authHeader)) { 
+                const token = authHeader.split(' ')[1]
+                jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user)  => {
+                    if(err) {
+                        res.status(403).send("Invalid token")
+                    } else {
+                        req.user = user
+                    }
+                })
+            }
+            next()
         } catch {
             res.status(401).send("Invalid token")
         }

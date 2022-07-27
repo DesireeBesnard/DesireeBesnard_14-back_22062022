@@ -2,7 +2,8 @@ import { check } from 'express-validator'
 import bcrypt from 'bcryptjs'
 import { EmployeesController } from "../controllers/employees.controller.js"
 const employeesController = EmployeesController.getInstance()
-import Employee from '../models/Employee.js'
+import employee from '../models/Employee.js'
+import { request } from 'express'
 
 
 export class EmployeesMiddleware {
@@ -63,9 +64,18 @@ export class EmployeesMiddleware {
 
     }
 
-    checkOwner(req, res, next) {
-        console.log('I am the owner')
-        next()
+    async checkOwner(req, res, next) {
+        const user = req.user
+        const target = await employee.findOne({ _id: req.body.id })
+
+        if(req.body.id !== user.userId) {
+            res.send(403).send("Only owner authorized")
+        } else {
+            res.send(200)
+            next()
+        }
+
+ 
     }
 
     async checkAdmin(req, res, next) {

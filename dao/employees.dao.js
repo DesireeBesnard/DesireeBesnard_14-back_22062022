@@ -38,6 +38,24 @@ export class EmployeesDAO {
         }
     }
 
+    async updateAdminStatus(id) {
+        try {
+            const target = await Employee.findOne({_id: id})
+
+            if(!target) {
+                res.status(404).send("problemo")
+            }
+            const targetStatus = target.isAdmin
+            const updatedEmployee = await Employee.findByIdAndUpdate(
+                id,
+                { isAdmin: !targetStatus}
+            )
+            return updatedEmployee
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
     async delete(id) {
         try {
             const deletedEmployee = await Employee.findByIdAndDelete(id)

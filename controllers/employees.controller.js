@@ -1,6 +1,5 @@
 import { EmployeesService } from "../services/employees.services.js"
-import mongoose from 'mongoose'
-
+import { mongoose } from "mongoose"
 
 //controller appelle les différents services
 
@@ -38,14 +37,17 @@ export class EmployeesController {
     }
 
     async updateAdminStatus(req, res) {
-        res.send("Status updated")
+
+        /*const updatedStatus = await EmployeesService.getInstance().updateAdminStatus(req.params.id)
+        res.status(200).send(updatedStatus)*/
+        return res.send("updateAdminStatus")
     }
 
     async delete(req, res) {
 
         try {
             const deleteEmployee = await EmployeesService.getInstance().delete(req.params.id)
-            res.status(200).send(deleteEmployee)
+            //res.status(200).send(deleteEmployee)
         } catch (error) {
             res.status(500).send(error)
         }
