@@ -31,6 +31,10 @@ const EmployeeSchema = new mongoose.Schema({
         required: true,
         default: false
     },
+    token: {
+        type: Array,
+        default: [String]
+    },
     refreshTokens: {
         type: Array,
         default: [String]

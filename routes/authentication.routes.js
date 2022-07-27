@@ -18,8 +18,9 @@ router.post('/user/login', [
     authenticationController.login
 ])
 
-router.post('/user/refreshToken', [
-    tokenMiddleware.getNewToken
+router.post('/user/token', [
+    tokenMiddleware.getNewToken,
+    authenticationController.login
 ])
 
 //router.post('/user/logout')

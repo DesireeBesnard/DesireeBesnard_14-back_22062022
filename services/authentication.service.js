@@ -16,8 +16,8 @@ export class AuthenticationService {
         return newUser
     }
 
-    async login(userId, refreshToken) {
-        return await AuthenticationDAO.getInstance().login(userId, refreshToken)
+    async login(userId, token, refreshToken) {
+        return await AuthenticationDAO.getInstance().login(userId, token, refreshToken)
  
     }
 }

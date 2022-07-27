@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import RefreshToken from "../models/RefreshToken.js"
+import employee from "../models/Employee.js"
 
 
 const refreshTokenArray = []
@@ -16,7 +16,7 @@ export class TokenMiddleware {
     }
 
     checkToken(req, res, next) {
-        //const authcookie = req.cookies.authcookie
+        const authcookie = req.cookies.authcookie
         const authHeader = req.headers.authorization
     
         if (!authHeader) {
@@ -57,37 +57,34 @@ export class TokenMiddleware {
     }
     
     async getNewToken(req, res, next) {
-        const refreshToken = req.body.refreshToken
+        const token = req.body
 
-        if(!refreshToken) {
-            res.status(401).send("token required")
+        if(!token) {
+            return res.status(401).send("token required")
         }
 
-        const decode = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
-        if(!decode) {
-            res.status(403).send("Invalid token")
+        const tokenOwner = employee.findOne({refreshTokens: token})
+        if(!tokenOwner) {
+            return res.status(403).send("Token expired")
         }
 
         //new access token
     
         try {
-            const userId = decode.userId
+            jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+                if(err) {
+                    return res.status(403).send("Invalid token")
+                }
 
-            const findToken = await RefreshToken.findOne({token:refreshToken})
-            if(!findToken) {
-                res.status(403).send("Token expired")
-            } else {
+                const accessToken = this.getAccessToken(user)
+                const refresh_token = this.getRefreshAccessToken(user)
+                req.userId = user._id
+                req.token = token
+                req.refreshToken = refresh_token
+                res.status(200).send(accessToken)
+            })
+            next()
 
-                const token = this.getAccessToken(userId)
-                const refresh_Token = this.getRefreshAccessToken(userId)
-                let newToken = await RefreshToken.findOneAndUpdate(
-                    {token: refreshToken},
-                    {token: refresh_Token},
-                    {new: true}
-                )
-            }
-
-            res.status(200).send({token: newToken, refreshToken: newRefreshToken})
         } catch (error) {
             console.error(error)
             res.status(500).send(error)

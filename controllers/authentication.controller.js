@@ -18,7 +18,7 @@ export class AuthenticationController {
     }
 
     async login(req, res) {
-        const refreshToken = await AuthenticationService.getInstance().login(req.userId, req.refreshToken)
+        const storeTokens = await AuthenticationService.getInstance().login(req.userId, req.token, req.refreshToken)
         res.status(200).send({token: req.token, refreshToken: req.refreshToken})
     }
     

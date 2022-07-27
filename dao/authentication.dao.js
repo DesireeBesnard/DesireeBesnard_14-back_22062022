@@ -17,10 +17,16 @@ export class AuthenticationDAO {
         return savedUser
     }
 
-    async login(userId, refreshToken) {
-        return await employee.updateOne(
-            {_id: userId},
-            {$addToSet: { refreshTokens: refreshToken } }
+    async login(userId, token, refreshToken) {
+        return (
+            await employee.updateOne(
+                {id: userId},
+                {$addToSet: {token: token} }
+            ),
+            await employee.updateOne(
+                {_id: userId},
+                {$addToSet: { refreshTokens: refreshToken } }
+            )
         )
     }
 }
