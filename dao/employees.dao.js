@@ -1,4 +1,6 @@
 import Employee from '../models/Employee.js'
+import mongoose from 'mongoose'
+let ObjectId = mongoose.Types.ObjectId
 
 //DAO defines the standard operations to be performed on a model object.
 
@@ -38,17 +40,12 @@ export class EmployeesDAO {
         }
     }
 
-    async updateAdminStatus(id) {
+    async updateAdminStatus(id, targetStatus) {
         try {
-            const target = await Employee.findOne({_id: id})
-
-            if(!target) {
-                res.status(404).send("problemo")
-            }
-            const targetStatus = target.isAdmin
             const updatedEmployee = await Employee.findByIdAndUpdate(
                 id,
-                { isAdmin: !targetStatus}
+                { isAdmin: !targetStatus},
+                {returnDocument: 'after'}
             )
             return updatedEmployee
         } catch(error) {
@@ -64,6 +61,4 @@ export class EmployeesDAO {
             throw "Je n'ai pas delete"
         }
     }
-    
-
 }

@@ -38,9 +38,8 @@ export class EmployeesController {
 
     async updateAdminStatus(req, res) {
 
-        /*const updatedStatus = await EmployeesService.getInstance().updateAdminStatus(req.params.id)
-        res.status(200).send(updatedStatus)*/
-        return res.send("updateAdminStatus")
+        const updatedStatus = await EmployeesService.getInstance().updateAdminStatus(req.params.id, req.targetStatus)
+        res.status(200).send(updatedStatus)
     }
 
     async delete(req, res) {

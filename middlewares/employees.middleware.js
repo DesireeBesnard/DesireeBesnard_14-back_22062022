@@ -64,21 +64,20 @@ export class EmployeesMiddleware {
 
     }
 
-    async checkOwner(req, res, next) {
+    async checkOwnership(req, res, next) {
         const user = req.user
         const target = await employee.findOne({ _id: req.body.id })
 
-        if(req.body.id !== user.userId) {
+        if(target._id !== user.userId) {
             res.send(403).send("Only owner authorized")
         } else {
             res.send(200)
             next()
         }
 
- 
     }
 
-    async checkAdmin(req, res, next) {
+    async checkAdminStatus(req, res, next) {
         const user = req.user
 
         if(user.isAdmin) {
@@ -87,4 +86,16 @@ export class EmployeesMiddleware {
             res.status(403).send("Admin status required")
         }
     }
+
+    async getAdminTarget(req, res, next) {
+        const target = await employee.findById(req.params.id)
+        
+        if(!target) {
+            res.status(404).send("Unkown user")
+        }
+
+        req.targetStatus = target.isAdmin
+        next()
+    }
+
 }

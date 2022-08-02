@@ -22,26 +22,21 @@ router.get('/employees', [
 //Create a user
 router.post('/employees', [
     tokenMiddleware.checkToken,
-    employeesMiddleware.checkAdmin,
+    employeesMiddleware.checkAdminStatus,
     employeesMiddleware.validateNewEmployee,
     employeesController.createEmployee
 ])
 
 router.put('/employees/:id', [
     tokenMiddleware.checkToken,
-    employeesMiddleware.checkOwner,
+    employeesMiddleware.checkOwnership,
     employeesController.update
 ])
 
-/*router.put('employees/:id/status', [
+router.put('/employees/:id/admin', [
     tokenMiddleware.checkToken,
-    employeesMiddleware.checkOwner,
-    employeesController.update
-])*/
-
-router.put('employees/:id/admin', [
-    tokenMiddleware.checkToken,
-    employeesMiddleware.checkAdmin,
+    employeesMiddleware.checkAdminStatus,
+    employeesMiddleware.getAdminTarget,
     employeesController.updateAdminStatus
 ])
 

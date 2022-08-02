@@ -2,7 +2,6 @@ import { EmployeesDAO } from "../dao/employees.dao.js"
 
 // service morceau de code qui permet de faire une logique. Une tâche par service
 
-
 export class EmployeesService {
 
     static instance 
@@ -30,8 +29,8 @@ export class EmployeesService {
         return updatedEmployee
     }
 
-    async updateAdminStatus(id) {
-        const updatedEmployee = await EmployeesDAO.getInstance().updateAdminStatus(id)
+    async updateAdminStatus(id, targetStatus) {
+        const updatedEmployee = await EmployeesDAO.getInstance().updateAdminStatus(id, targetStatus)
         return updatedEmployee
     }
 
