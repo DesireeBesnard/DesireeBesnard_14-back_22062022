@@ -33,6 +33,16 @@ export class EmployeesService {
         const updatedEmployee = await EmployeesDAO.getInstance().updateAdminStatus(id, targetStatus)
         return updatedEmployee
     }
+    
+    async follow(followId, userId) {
+        const follow = await EmployeesDAO.getInstance().follow(followId, userId)
+        return follow
+    }
+
+    async unfollow(followId, userId) {
+        const unfollow = await EmployeesDAO.getInstance().unfollow(followId, userId)
+        return unfollow
+    }
 
     async delete(id) {
         const deleteEmployee = await EmployeesDAO.getInstance().delete(id)

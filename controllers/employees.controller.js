@@ -42,6 +42,16 @@ export class EmployeesController {
         res.status(200).send(updatedStatus)
     }
 
+    async follow(req, res) {
+        const follow = await EmployeesService.getInstance().follow(req.body.followId, req.user.userId)
+        res.status(200).send(follow)
+    }
+
+    async unfollow(req, res) {
+        const unfollow = await EmployeesService.getInstance().unfollow(req.body.followId, req.user.userId)
+        res.status(200).send(unfollow)
+    }
+
     async delete(req, res) {
 
         try {

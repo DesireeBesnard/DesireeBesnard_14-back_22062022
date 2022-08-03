@@ -53,6 +53,46 @@ export class EmployeesDAO {
         }
     }
 
+    async follow(followId, userId) {
+        try {
+            const followers = await Employee.findByIdAndUpdate(
+                followId,
+                {$addToSet: {followers: userId}},
+                {new: true}
+            )
+
+            const followings = await Employee.findByIdAndUpdate(
+                userId,
+                {$addToSet: {followings: followId}},
+                {new: true}
+            )
+            return followers
+        } catch (error) {
+            return error
+        }
+    }
+
+    async unfollow(followId, userId) {
+        try {
+            const unfollow = await Employee.findByIdAndUpdate(
+                followId,
+                {$pull: {followers: userId}},
+                {new: true}
+            )
+
+            const removeFollowing = await Employee.findByIdAndUpdate(
+                userId,
+                {$pull: {followings: followId}},
+                {new: true}
+            )
+
+            return unfollow
+        } catch (error) {
+            return error
+        }
+    }
+
+
     async delete(id) {
         try {
             const deletedEmployee = await Employee.findByIdAndDelete(id)

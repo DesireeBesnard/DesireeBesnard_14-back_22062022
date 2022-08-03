@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+const ObjectId = mongoose.Types.ObjectId
 
 const EmployeeSchema = new mongoose.Schema({
     firstName: {
@@ -39,14 +40,8 @@ const EmployeeSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
-    followers: {
-        type: Array,
-        default: []
-    },
-    followings: {
-        type: Array,
-        default: []
-    }
+    followers: [{type:ObjectId, ref:'Employee'}],
+    followings: [{type:ObjectId, ref:'Employee'}]
 })
 
 const employee = mongoose.model('Employee', EmployeeSchema)

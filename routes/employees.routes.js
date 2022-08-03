@@ -33,6 +33,16 @@ router.put('/employees/:id', [
     employeesController.update
 ])
 
+router.put('/employees/:id/follow', [
+    tokenMiddleware.checkToken,
+    employeesController.follow
+])
+
+router.put('/employees/:id/unfollow', [
+    tokenMiddleware.checkToken,
+    employeesController.unfollow
+])
+
 router.put('/employees/:id/admin', [
     tokenMiddleware.checkToken,
     employeesMiddleware.checkAdminStatus,
